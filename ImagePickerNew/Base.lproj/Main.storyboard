@@ -18,7 +18,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YD3-hD-sB6">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
-                                    <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="ckL-5M-xao">
+                                    <barButtonItem systemItem="action" id="ckL-5M-xao">
                                         <connections>
                                             <action selector="save" destination="BYZ-38-t0r" id="1Eh-sz-Q4s"/>
                                         </connections>
@@ -59,7 +59,7 @@
                                 <rect key="frame" x="0.0" y="775.5" width="414" height="37.5"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -101,6 +101,5 @@
     </scenes>
     <resources>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
-        <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
     </resources>
 </document>

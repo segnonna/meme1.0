@@ -23,14 +23,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet var bottomToolBar: UIToolbar!
     
     @IBOutlet var shareButton: UIBarButtonItem!
-    
-    let memeTextAttributes: [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.strokeColor: UIColor.black,
-        NSAttributedString.Key.foregroundColor: UIColor.white,
-        NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: 0.0
-    ]
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
@@ -39,14 +32,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.topTextField.defaultTextAttributes = self.memeTextAttributes
-        self.topTextField.textAlignment = NSTextAlignment.center
-        self.topTextField.delegate = self
-        
-        self.bottomTextField.defaultTextAttributes = self.memeTextAttributes
-        self.bottomTextField.textAlignment = NSTextAlignment.center
-        self.bottomTextField.delegate = self
+        setupTextField(tf: self.topTextField)
+        setupTextField(tf: self.bottomTextField)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,18 +42,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     @IBAction func pickImage(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
+        chooseImageFromCameraOrPhoto(source: .photoLibrary)
+    }
+    
+    @IBAction func openCamera(_ sender: Any) {
+        chooseImageFromCameraOrPhoto(source: .camera)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.image = image
             shareButton.isEnabled = true
-            
-            
         }
         dismiss(animated: true)
     }
@@ -117,7 +103,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         return true
     }
     
-    
     @IBAction func save() {
         // Create the meme
         let meme = Meme(topText: topTextField.text ?? "", bottomText: bottomTextField.text ?? "", originalImage: imageView.image ?? UIImage(), memedImage: generateMemedImage())
@@ -166,12 +151,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         return memedImage
     }
     
-}
-
-struct Meme{
-    let topText: String
-    let bottomText:String
-    let originalImage: UIImage
-    let memedImage: UIImage
+    func setupTextField(tf: UITextField) {
+        tf.defaultTextAttributes = [
+            NSAttributedString.Key.strokeColor: UIColor.black,
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: -4.0
+        ]
+        tf.textColor = UIColor.white
+        tf.tintColor = UIColor.white
+        tf.textAlignment = .center
+        tf.delegate = self
+    }
+    
+    func chooseImageFromCameraOrPhoto(source: UIImagePickerController.SourceType) {
+           let pickerController = UIImagePickerController()
+           pickerController.delegate = self
+           pickerController.allowsEditing = true
+           pickerController.sourceType = source
+           present(pickerController, animated: true, completion: nil)
+       }
 }
 
